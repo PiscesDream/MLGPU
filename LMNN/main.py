@@ -111,7 +111,7 @@ class LMNN(object):
             if t % reset == 0:
                 active_set = self._get_active_set(x, y, neighbors)
                 last_error = np.inf
-                # reset lr: lr = _lr
+                #lr = _lr # reset lr: 
 
             # recovery M
             temp = M.get_value()
@@ -133,7 +133,7 @@ class LMNN(object):
             t += 1
 
         self.trained = True
-        if self.autosave: self.save('temp.MLMNN')
+        if self.autosave: self.save('LMNN.model')
         return self
 
     def save(self, filename):
@@ -199,22 +199,23 @@ if __name__ == '__main__':
     from sklearn.datasets import load_digits
     from sklearn.neighbors import KNeighborsClassifier
     from sklearn.cross_validation import train_test_split
+    from KNN import __knn
     digits_data = load_digits()
     x = digits_data['data']
     y = digits_data['target']
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.60)
-    
-    lmnn = LMNN(k=5, mu=1-5e-4, verbose=True)
-    L = lmnn.fit(x_train, y_train, maxS=1000, lr=1e-4, max_iter=1000, reset=50).L
+
+    lmnn = LMNN(k=5, mu=1-1e-2, verbose=True)
+    L = lmnn.fit(x_train, y_train, maxS=1000, lr=1e-5, max_iter=500, reset=20).L
     print L.shape
 
-    def knn(x_train, y_train, x_test, y_test):
+    def knn(x_train, x_test, y_train, y_test):
         neigh = KNeighborsClassifier(n_neighbors=5)
         neigh.fit(x_train, y_train)
         print float((neigh.predict(x_test) == y_test).sum())/y_test.shape[0]
 
     L[np.isnan(L)] = 0
-    knn(x_train, y_train, x_test, y_test)
-    knn(x_train.dot(L), y_train, x_test.dot(L), y_test)
+    print __knn(x_train, x_test, y_train, y_test, K=5)
+    print __knn(x_train, x_test, y_train, y_test, M=lmnn.M.get_value(), K=5)
 
 

@@ -1,3 +1,4 @@
+import numpy as np
 import theano
 import theano.tensor as T
 from theano.tensor.nlinalg import diag as __gdiag
@@ -12,7 +13,7 @@ __gv = (__gx-__gxs)/T.sqrt(__gx+__gxs+1e-20)
 __gdist = __gdiag(__gv.dot(__gM).dot(__gv.T))
 __dist1vsNchisquare = theano.function([__gx, __gxs, __gM], __gdist, allow_input_downcast=True)
 
-def __knn(train_x, test_x, train_y, test_y, M, K=5, verbose=False, cfmatrix=False):
+def __knn(train_x, test_x, train_y, test_y, M=None, K=5, verbose=False, cfmatrix=False):
     n = len(train_x)
     m = len(set(train_y))
     if M is None:
