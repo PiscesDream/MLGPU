@@ -2,6 +2,7 @@ import numpy as np
 import theano
 import theano.tensor as T
 from theano.tensor.nlinalg import diag as __gdiag
+
 __gx = T.vector('__gx', dtype='float32') 
 __gxs = T.matrix('__gxs', dtype='float32') 
 __gM = T.matrix('__gM', dtype='float32') 

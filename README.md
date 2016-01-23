@@ -1,4 +1,4 @@
 MLGPU
 ---
 
-Machine learning algorithm with GPU based on Theano.
+A set of machine learning algorithms implemented with GPU based on Theano or Cython.
